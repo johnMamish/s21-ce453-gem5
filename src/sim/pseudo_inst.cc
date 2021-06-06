@@ -584,4 +584,14 @@ workend(ThreadContext *tc, uint64_t workid, uint64_t threadid)
     }
 }
 
+void instrumentLockEnter(ThreadContext* tc)
+{
+    DPRINTF(PseudoInst, "CPU %i: Enter spinlock\n", tc->getCpuPtr()->cpuId());
+}
+
+void instrumentLockExit(ThreadContext* tc)
+{
+    DPRINTF(PseudoInst, "CPU%i: Exit spinlock\n", tc->getCpuPtr()->cpuId());
+}
+
 } // namespace PseudoInst

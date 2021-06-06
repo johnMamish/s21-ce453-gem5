@@ -93,6 +93,9 @@ void m5Syscall(ThreadContext *tc);
 void togglesync(ThreadContext *tc);
 void triggerWorkloadEvent(ThreadContext *tc);
 
+void instrumentLockEnter(ThreadContext* tc);
+void instrumentLockExit(ThreadContext* tc);
+
 /**
  * Execute a decoded M5 pseudo instruction
  *
@@ -212,7 +215,13 @@ pseudoInstWork(ThreadContext *tc, uint8_t func, uint64_t &result)
         return true;
 
       case M5OP_RESERVED1:
+         invokeSimcall<ABI>(tc, instrumentLockEnter);
+         return true;
+
       case M5OP_RESERVED2:
+         invokeSimcall<ABI>(tc, instrumentLockExit);
+         return true;
+
       case M5OP_RESERVED3:
       case M5OP_RESERVED4:
       case M5OP_RESERVED5:
